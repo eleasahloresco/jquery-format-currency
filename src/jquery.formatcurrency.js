@@ -5,7 +5,8 @@
 	$.fn.autoFormatCurrency = function(options) {
 		
 		var settings = $.extend({
-				formatOnStart: true
+				formatOnStart: true,
+				formatString: "n0"
 			}, options),
 
 			// Number keys (top of keyboard, and numeric keypad), delete, backspace
@@ -34,8 +35,8 @@
 			var rawValue = $this.val(),
 				floatValue = Globalize.parseFloat(rawValue);
 
-			if (!isNaN(floatValue)) {
-				var formattedValue = Globalize.format(floatValue, "n0"),
+			if ($.isNumeric(floatValue)) {
+				var formattedValue = Globalize.format(floatValue, settings.formatString),
 					caretPosition = 0;
 
 				if (setCaretPosition) {
@@ -48,7 +49,7 @@
 					$this.caret(caretPosition, caretPosition);
 				}
 			}
-			
+
 		}
 
 	};

@@ -3,6 +3,19 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Format currency as you type</title>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="globalize.js"></script>
+		<script src="globalize.cultures.js"></script>
+		<script src="jquery.caret.1.02.min.js"></script>
+		<script src="../src/jquery.formatcurrency.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				Globalize.culture("da");
+				$("#currencyInput").autoFormatCurrency().on("change", function(event) {
+					$("#activityLog").prepend($("<li />").text("change event raised"))
+				});
+			});
+		</script>
 	</head>
 	<body>
 
@@ -13,6 +26,8 @@
 				<label for="currencyInput">Type amount</label>
 				<input type="text" id="currencyInput" />
 			</div>
+			<ul id="activityLog">
+			</ul>
 		</section>
 
 	</body>
