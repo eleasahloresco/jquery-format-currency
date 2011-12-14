@@ -15,7 +15,10 @@
 		return this.each(function() {
 			
 			var $this = $(this);
-			formatCurrency($this, false);
+
+			if (settings.formatOnStart) {
+				formatCurrency($this, false);
+			}
 
 			$this.off(".autoformatcurrency");
 			$this.on("keyup.autoformatcurrency", function(event) {
@@ -24,9 +27,18 @@
 				}
 			});
 
-			$this.on("change.autoformatcurrency", function(event) {
+			$this.on("paste.autoformatcurrency", function(event) {
 				formatCurrency($(this), false);
 			});
+
+			$this.on("blur.autoformatcurrency", function(event) {
+        if ($(this).val() !== $(this).data("originalValue")) {
+           $(this).data("originalValue", $(this).val());
+           $(this).change();
+        } 
+    	});
+
+			$(this).data("originalValue", $(this).val());
 
 		});
 
@@ -43,10 +55,12 @@
 					caretPosition = $this.caret().end + (formattedValue.length - rawValue.length);
 				}
 
-				$this.val(formattedValue);
+				if (formattedValue !== rawValue) {
+					$this.val(formattedValue);
 
-				if (setCaretPosition) {
-					$this.caret(caretPosition, caretPosition);
+					if (setCaretPosition) {
+						$this.caret(caretPosition, caretPosition);
+					}
 				}
 			}
 
